@@ -12,6 +12,12 @@ export const addressListAPI = {
     return instance.get(`/Request/houses/${id}`);
   },
   getHouseFlats(id) {
-    return instance.get(`/Request/house_flats/${id}`)
+    return instance.get(`/Request/house_flats/${id}`);
   },
+}
+
+export const clientsAPI = {
+  getClients(addressId) {
+    return instance.get(`/HousingStock/clients?addressId=${addressId}`);
+  }
 }

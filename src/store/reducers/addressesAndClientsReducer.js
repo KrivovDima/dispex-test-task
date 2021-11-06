@@ -1,4 +1,4 @@
-import {addressListAPI} from "../../api/clients";
+import {addressListAPI, clientsAPI} from "../../api/clients";
 
 const initialState = {
   streets: [],
@@ -6,7 +6,8 @@ const initialState = {
   houseFlats: [],
   selectedStreet: {},
   selectedHouse: {},
-  selectedHouseFlats: {},
+  selectedHouseFlat: {},
+  clients: [],
 }
 
 export const addressesAndClientsReducer = (state = initialState, action) => {
@@ -39,7 +40,13 @@ export const addressesAndClientsReducer = (state = initialState, action) => {
     }
     case 'ADD-SELECTED-HOUSE-FLAT': {
       const selectedHouseFlat = state.houseFlats.find(flat => flat.id === action.id);
-      return {...state, selectedHouseFlats: selectedHouseFlat};
+      return {...state, selectedHouseFlat: selectedHouseFlat};
+    }
+    case 'ADD-CLIENTS': {
+      return {
+        ...state,
+        ...action.payload,
+      }
     }
     default: {
       return state
@@ -85,6 +92,12 @@ export const addSelectedHouseFlat = (id) => {
     id,
   }
 }
+const addClients = (clients) => {
+  return {
+    type: 'ADD-CLIENTS',
+    payload: {clients},
+  }
+}
 
 // thunk creators
 
@@ -110,6 +123,14 @@ export const fetchHouseFlats = (id) => async (dispatch) => {
   try {
     const res = await addressListAPI.getHouseFlats(id);
     dispatch(addHouseFlats(res.data));
+  } catch (e) {
+    console.log(e);
+  }
+}
+export const fetchClients = (addressId) => async (dispatch) => {
+  try {
+    const res = await clientsAPI.getClients(addressId);
+    dispatch(addClients(res.data));
   } catch (e) {
     console.log(e);
   }
