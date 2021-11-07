@@ -21,7 +21,9 @@ function Clients(props) {
   return (
     <div className={styles.wrapper}>
       <SelectAddress/>
-      <Button onClick={watchClients} type="primary">Показать клиентов</Button>
+      <div className={styles.btns}>
+        <Button onClick={watchClients} type="primary">Показать клиентов</Button>
+      </div>
       <ClientsList list={clients}/>
     </div>
   );

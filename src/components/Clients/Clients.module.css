@@ -3,3 +3,9 @@
   margin: 0 auto;
   padding-top: 50px;
 }
+
+.btns {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
