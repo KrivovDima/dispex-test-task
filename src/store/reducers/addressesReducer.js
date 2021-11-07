@@ -1,4 +1,4 @@
-import {addressListAPI, clientsAPI} from "../../api/clients";
+import {addressListAPI} from "../../api/clients";
 
 const initialState = {
   streets: [],
@@ -8,7 +8,7 @@ const initialState = {
   selectedHouse: {},
   selectedHouseFlat: {},
   currentFullAddress: '',
-  status: 'idle', // maybe 'idle' 'loading' | 'success'
+  status: 'idle', // maybe 'idle' | 'loading' | 'success'
 }
 
 export const addressesReducer = (state = initialState, action) => {
@@ -60,42 +60,12 @@ export const addressesReducer = (state = initialState, action) => {
 
 // actions creators
 
-const addStreets = (streets) => {
-  return {
-    type: 'ADD-STREETS',
-    payload: {streets},
-  }
-}
-const addHouses = (houses) => {
-  return {
-    type: 'ADD-HOUSES',
-    payload: {houses},
-  }
-}
-const addHouseFlats = (houseFlats) => {
-  return {
-    type: 'ADD-HOUSE-FLATS',
-    payload: {houseFlats},
-  }
-}
-export const addSelectedStreet = (id) => {
-  return {
-    type: 'ADD-SELECTED-STREET',
-    id,
-  }
-}
-export const addSelectedHouse = (id) => {
-  return {
-    type: 'ADD-SELECTED-HOUSE',
-    id,
-  }
-}
-export const addSelectedHouseFlat = (id) => {
-  return {
-    type: 'ADD-SELECTED-HOUSE-FLAT',
-    id,
-  }
-}
+const addStreets = (streets) => ({type: 'ADD-STREETS', payload: {streets},})
+const addHouses = (houses) => ({type: 'ADD-HOUSES', payload: {houses},})
+const addHouseFlats = (houseFlats) => ({type: 'ADD-HOUSE-FLATS', payload: {houseFlats},})
+export const addSelectedStreet = (id) => ({type: 'ADD-SELECTED-STREET', id,})
+export const addSelectedHouse = (id) =>({type: 'ADD-SELECTED-HOUSE', id,})
+export const addSelectedHouseFlat = (id) => ({type: 'ADD-SELECTED-HOUSE-FLAT', id,})
 export const addCurrentFullAddress = () => ({type: 'ADD-CURRENT-FULL-ADDRESS'});
 export const changeAddressesStatus = (status) => ({type: 'CHANGE-ADDRESSES-STATUS', payload: {status}});
 
@@ -103,25 +73,29 @@ export const changeAddressesStatus = (status) => ({type: 'CHANGE-ADDRESSES-STATU
 
 export const fetchStreets = () => async (dispatch) => {
   try {
+    dispatch(changeAddressesStatus('loading'));
     const res = await addressListAPI.getStreets();
+    dispatch(changeAddressesStatus('success'));
     dispatch(addStreets(res.data));
   } catch (e) {
     console.log(e);
   }
-
 }
 export const fetchHouses = (id) => async (dispatch) => {
   try {
+    dispatch(changeAddressesStatus('loading'));
     const res = await addressListAPI.getHouses(id);
+    dispatch(changeAddressesStatus('success'));
     dispatch(addHouses(res.data));
   } catch (e) {
     console.log(e);
   }
-
 }
 export const fetchHouseFlats = (id) => async (dispatch) => {
   try {
+    dispatch(changeAddressesStatus('loading'));
     const res = await addressListAPI.getHouseFlats(id);
+    dispatch(changeAddressesStatus('success'));
     dispatch(addHouseFlats(res.data));
   } catch (e) {
     console.log(e);

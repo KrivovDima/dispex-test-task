@@ -1,25 +1,22 @@
 import React, {useState} from 'react';
 import SelectAddress from './SelectAddress/SelectAddress';
 import styles from './Clients.module.css';
-import {Button} from "antd";
+import {Button, Spin} from "antd";
 import ClientsList from "./ClientsList/ClientsList";
 import {useDispatch, useSelector} from "react-redux";
 import ClientModal from "./ClientModal/ClientModal";
-import {changeEditableClientData, changeInputMode, fetchClients} from "../../store/reducers/clientsReducer";
+import {changeEditableClientData, changeInputMode} from "../../store/reducers/clientsReducer";
 
 
-function Clients(props) {
+function Clients() {
 
   const [isVisibleClientModal, setIsVisibleClientModal] = useState(false);
 
   const dispatch = useDispatch();
-  const selectAddressId = useSelector(state => state.addresses.selectedHouseFlat.id);
+  const currentFullAddress = useSelector(state => state.addresses.currentFullAddress);
+  const addressStatus = useSelector(state => state.addresses.status);
   const clients = useSelector(state => state.clients.clients);
   const editableClientData = useSelector(state => state.clients.editableClientData);
-
-  const watchClients = () => {
-    dispatch(fetchClients(selectAddressId));
-  }
 
   const handleSetIsVisibleClientModal = (value) => {
     setIsVisibleClientModal(value);
@@ -39,10 +36,13 @@ function Clients(props) {
   return (
     <div className={styles.wrapper}>
       <SelectAddress/>
+      <div className={styles.spinWrapper}>
+        {addressStatus === 'loading' && <Spin/>}
+      </div>
       <div className={styles.btns}>
-        <Button className={styles.btn}
-                onClick={handleOnClickAddClient}
+        <Button onClick={handleOnClickAddClient}
                 type="primary"
+                disabled={!currentFullAddress}
                 >
           Добавить жильца
         </Button>

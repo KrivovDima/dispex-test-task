@@ -8,6 +8,7 @@ function AddressItem(props) {
   return (
     <span>
       <Select
+        disabled={props.disabled}
         showSearch
         style={{ width: 200 }}
         placeholder={props.placeholder}
@@ -21,7 +22,6 @@ function AddressItem(props) {
         {props.list.map(item => {
           return <Option key={item.id} value={item.id}>{item.name}</Option>
         })}
-
       </Select>
     </span>
   );

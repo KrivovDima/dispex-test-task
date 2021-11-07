@@ -4,22 +4,22 @@ import styles from './SelectAddress.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {
   addCurrentFullAddress,
-  addSelectedHouse, addSelectedHouseFlat,
-  addSelectedStreet, fetchHouseFlats,
+  addSelectedHouse,
+  addSelectedHouseFlat,
+  addSelectedStreet,
+  fetchHouseFlats,
   fetchHouses,
   fetchStreets
 } from "../../../store/reducers/addressesReducer";
 import {fetchClients} from "../../../store/reducers/clientsReducer";
 
-function SelectAddress(props) {
+function SelectAddress() {
   const dispatch = useDispatch();
   const {
     streets,
     houses,
     houseFlats,
-    selectedStreet,
-    selectedHouse,
-    selectedHouseFlat,
+    status,
   } = useSelector(state => state.addresses);
 
   useEffect(() => {
@@ -28,24 +28,12 @@ function SelectAddress(props) {
 
   const changeSelectedStreet = (id) => {
     dispatch(addSelectedStreet(id));
-  }
-
-  const onBlurStreet = () => {
-    if (!selectedStreet.id) {
-      return
-    }
-    dispatch(fetchHouses(selectedStreet.id));
+    dispatch(fetchHouses(id));
   }
 
   const changeSelectedHouse = (id) => {
     dispatch(addSelectedHouse(id));
-  }
-
-  const onBlurHouse = () => {
-    if (!selectedHouse.id) {
-      return
-    }
-    dispatch(fetchHouseFlats(selectedHouse.id));
+    dispatch(fetchHouseFlats(id));
   }
 
   const changeSelectedHouseFlat = (id) => {
@@ -56,15 +44,16 @@ function SelectAddress(props) {
 
   return (
     <div className={styles.wrapper}>
-      <AddressItem onBlur={onBlurStreet}
+      <AddressItem disabled={status === 'loading'}
                    onChange={changeSelectedStreet}
                    list={streets}
                    placeholder='Улица'/>
-      <AddressItem onBlur={onBlurHouse}
+      <AddressItem disabled={status === 'loading'}
                    onChange={changeSelectedHouse}
                    list={houses}
                    placeholder='Дом'/>
-      <AddressItem onChange={changeSelectedHouseFlat}
+      <AddressItem disabled={status === 'loading'}
+                   onChange={changeSelectedHouseFlat}
                    list={houseFlats}
                    placeholder='Кв./офис'/>
     </div>

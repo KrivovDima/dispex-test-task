@@ -10,6 +10,9 @@
   padding-top: 20px;
 }
 
-.btn {
-  margin: 0 10px;
+.spinWrapper {
+  min-height: 27px;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }

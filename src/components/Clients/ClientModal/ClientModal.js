@@ -1,20 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Modal from "antd/es/modal/Modal";
-import {Form, Input, InputNumber, Button, Select} from 'antd';
+import {Button, Form, Input} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
-import {sendingAddClient, sendingDeleteClient, sendingUpdateClientData} from "../../../store/reducers/clientsReducer";
+import {sendingAddClient, sendingUpdateClientData} from "../../../store/reducers/clientsReducer";
 
 function ClientModal(props) {
+
   const dispatch = useDispatch()
 
   const {inputMode, editableClientData} = useSelector(state => state.clients);
   const currentFullAddress = useSelector(state => state.addresses.currentFullAddress);
   const addressId = useSelector(state => state.addresses.selectedHouseFlat.id);
-
-  const handleOk = () => {
-    props.onClickClientModal(false);
-  };
 
   const handleCancel = () => {
     props.onClickClientModal(false);
@@ -28,9 +25,9 @@ function ClientModal(props) {
 
   const formik = useFormik({
     initialValues: {
-      phone: props.editableClientData.phone,
-      name: props.editableClientData.name,
-      email: props.editableClientData.email,
+      phone: editableClientData.phone,
+      name: editableClientData.name,
+      email: editableClientData.email,
     },
     validate: values => {
       const errors = {};
@@ -56,7 +53,6 @@ function ClientModal(props) {
     }
   })
 
-
   return (
     <>
       <Modal title={inputMode === 'addition' ? 'Добавить жильца' : 'Редактировать данные'}
@@ -64,21 +60,20 @@ function ClientModal(props) {
              onCancel={handleCancel}
              footer={null}
              >
-        <p>{currentFullAddress}</p>
+        <p>
+          {currentFullAddress},
+          {inputMode === 'editing' && <span>Phone:&nbsp;{editableClientData.phone}</span>}
+        </p>
         <form onSubmit={formik.handleSubmit}>
-          <Form.Item
-            name="phone"
-            label="Телефон"
-            rules={[{ required: true,}]}
-          >
+          <Form.Item label="Телефон">
             <Input {...formik.getFieldProps('phone')} addonBefore={prefixSelector} style={{ width: '100%' }} />
             {formik.touched.phone && formik.errors.phone && <div style={{color: "tomato"}}>{formik.errors.phone}</div>}
           </Form.Item>
-          <Form.Item name={['user', 'name']} label="ФИО">
+          <Form.Item label="ФИО">
             <Input {...formik.getFieldProps('name')}/>
             {formik.touched.name && formik.errors.name && <div style={{color: "tomato"}}>{formik.errors.name}</div>}
           </Form.Item>
-          <Form.Item name={['user', 'email']} label="Email" rules={[{ type: 'email' }]}>
+          <Form.Item label="Email">
             <Input {...formik.getFieldProps('email')}/>
             {formik.touched.email && formik.errors.email && <div style={{color: "tomato"}}>{formik.errors.email}</div>}
           </Form.Item>

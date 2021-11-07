@@ -30,7 +30,7 @@ export const clientsAPI = {
     return instance.post('/HousingStock/client', {...clientData});
   },
   updateClientData(addressId, newClientData ) {
-    return instance.put('/HousingStock/bind_client', {addressId, ...newClientData})
+    return instance.put('/HousingStock/bind_client', {addressId, ...newClientData});
   }
 }
 

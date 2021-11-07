@@ -5,7 +5,6 @@ const initialState = {
   inputMode: '', // maybe 'addition' | 'editing'
   editableClientData: {clientId: null, name: '', phone: '', email: '',},
   clients: [],
-  status: 'idle', // maybe idle 'loading' | 'success'
 }
 
 export const clientsReducer = (state = initialState, action) => {
@@ -61,9 +60,6 @@ export const clientsReducer = (state = initialState, action) => {
         })
       }
     }
-    case 'CHANGE-CLIENTS-STATUS': {
-      return {...state, ...action.payload}
-    }
     default: {
       return state;
     }
@@ -74,16 +70,10 @@ export const clientsReducer = (state = initialState, action) => {
 
 export const changeInputMode = (inputMode) => ({type: 'CHANGE-INPUT-MODE', payload: {inputMode},});
 export const deleteClient = (id) => ({type: 'DELETE-CLIENT', id,});
-const addClients = (clients) => {
-  return {
-    type: 'ADD-CLIENTS',
-    payload: {clients},
-  }
-}
+const addClients = (clients) => ({type: 'ADD-CLIENTS', payload: {clients},})
 export const changeEditableClientData = (id) => ({type: 'CHANGE-EDITABLE-CLIENT-DATA', id,});
 const addClient = (clientData) => ({type: 'ADD-CLIENT', clientData,});
 const updateClient = (newClientData) => ({type: 'UPDATE-CLIENT', newClientData,});
-export const changeClientsStatus = (status) => ({type: 'CHANGE-CLIENTS-STATUS', payload: {status}});
 
 // thunk creators
 
