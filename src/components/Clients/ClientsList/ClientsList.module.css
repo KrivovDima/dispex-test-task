@@ -1,6 +1,11 @@
-.wrapper {
+.inner {
   padding-top: 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+.messageBox {
+  text-align: center;
+  padding-top: 30px;
 }

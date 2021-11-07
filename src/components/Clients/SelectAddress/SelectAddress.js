@@ -3,11 +3,13 @@ import AddressItem from "./AddressItem/AddressItem";
 import styles from './SelectAddress.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {
+  addCurrentFullAddress,
   addSelectedHouse, addSelectedHouseFlat,
   addSelectedStreet, fetchHouseFlats,
   fetchHouses,
   fetchStreets
-} from "../../../store/reducers/addressesAndClientsReducer";
+} from "../../../store/reducers/addressesReducer";
+import {fetchClients} from "../../../store/reducers/clientsReducer";
 
 function SelectAddress(props) {
   const dispatch = useDispatch();
@@ -17,7 +19,8 @@ function SelectAddress(props) {
     houseFlats,
     selectedStreet,
     selectedHouse,
-  } = useSelector(state => state.addressesAndClients);
+    selectedHouseFlat,
+  } = useSelector(state => state.addresses);
 
   useEffect(() => {
     dispatch(fetchStreets());
@@ -28,6 +31,9 @@ function SelectAddress(props) {
   }
 
   const onBlurStreet = () => {
+    if (!selectedStreet.id) {
+      return
+    }
     dispatch(fetchHouses(selectedStreet.id));
   }
 
@@ -36,11 +42,16 @@ function SelectAddress(props) {
   }
 
   const onBlurHouse = () => {
+    if (!selectedHouse.id) {
+      return
+    }
     dispatch(fetchHouseFlats(selectedHouse.id));
   }
 
   const changeSelectedHouseFlat = (id) => {
     dispatch(addSelectedHouseFlat(id));
+    dispatch(addCurrentFullAddress());
+    dispatch(fetchClients(id));
   }
 
   return (

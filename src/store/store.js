@@ -1,9 +1,11 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunk from "redux-thunk";
-import {addressesAndClientsReducer} from "./reducers/addressesAndClientsReducer";
+import {addressesReducer} from "./reducers/addressesReducer";
+import {clientsReducer} from "./reducers/clientsReducer";
 
 const rootReducer = combineReducers({
-  addressesAndClients: addressesAndClientsReducer,
+  addresses: addressesReducer,
+  clients: clientsReducer,
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

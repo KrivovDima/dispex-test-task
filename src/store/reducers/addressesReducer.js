@@ -7,10 +7,11 @@ const initialState = {
   selectedStreet: {},
   selectedHouse: {},
   selectedHouseFlat: {},
-  clients: [],
+  currentFullAddress: '',
+  status: 'idle', // maybe 'idle' 'loading' | 'success'
 }
 
-export const addressesAndClientsReducer = (state = initialState, action) => {
+export const addressesReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD-STREETS': {
       return {
@@ -42,11 +43,14 @@ export const addressesAndClientsReducer = (state = initialState, action) => {
       const selectedHouseFlat = state.houseFlats.find(flat => flat.id === action.id);
       return {...state, selectedHouseFlat: selectedHouseFlat};
     }
-    case 'ADD-CLIENTS': {
+    case 'ADD-CURRENT-FULL-ADDRESS': {
       return {
         ...state,
-        ...action.payload,
+        currentFullAddress: `${state.selectedStreet.name} ${state.selectedHouse.name} кв. ${state.selectedHouseFlat.name}`
       }
+    }
+    case 'CHANGE-ADDRESSES-STATUS': {
+      return {...state, ...action.payload}
     }
     default: {
       return state
@@ -92,12 +96,8 @@ export const addSelectedHouseFlat = (id) => {
     id,
   }
 }
-const addClients = (clients) => {
-  return {
-    type: 'ADD-CLIENTS',
-    payload: {clients},
-  }
-}
+export const addCurrentFullAddress = () => ({type: 'ADD-CURRENT-FULL-ADDRESS'});
+export const changeAddressesStatus = (status) => ({type: 'CHANGE-ADDRESSES-STATUS', payload: {status}});
 
 // thunk creators
 
@@ -127,14 +127,7 @@ export const fetchHouseFlats = (id) => async (dispatch) => {
     console.log(e);
   }
 }
-export const fetchClients = (addressId) => async (dispatch) => {
-  try {
-    const res = await clientsAPI.getClients(addressId);
-    dispatch(addClients(res.data));
-  } catch (e) {
-    console.log(e);
-  }
-}
+
 
 
 
