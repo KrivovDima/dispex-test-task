@@ -3,10 +3,11 @@ import {Select} from "antd";
 
 const { Option } = Select;
 
-function AddressItem(props) {
+const AddressItem = React.memo(
+  function (props) {
 
-  return (
-    <span>
+    return (
+      <span>
       <Select
         disabled={props.disabled}
         showSearch
@@ -24,8 +25,11 @@ function AddressItem(props) {
         })}
       </Select>
     </span>
-  );
-}
+    );
+  }
+)
+
+
 
 export default AddressItem;
 

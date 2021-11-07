@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import AddressItem from "./AddressItem/AddressItem";
 import styles from './SelectAddress.module.css';
 import {useDispatch, useSelector} from "react-redux";
@@ -26,21 +26,26 @@ function SelectAddress() {
     dispatch(fetchStreets());
   }, [dispatch])
 
-  const changeSelectedStreet = (id) => {
-    dispatch(addSelectedStreet(id));
-    dispatch(fetchHouses(id));
-  }
+  const changeSelectedStreet = useCallback(
+    (id) => {
+      dispatch(addSelectedStreet(id));
+      dispatch(fetchHouses(id));
+    }, [dispatch]
+  )
 
-  const changeSelectedHouse = (id) => {
-    dispatch(addSelectedHouse(id));
-    dispatch(fetchHouseFlats(id));
-  }
+  const changeSelectedHouse = useCallback(
+    (id) => {
+      dispatch(addSelectedHouse(id));
+      dispatch(fetchHouseFlats(id));
+    }, [dispatch]
+  )
 
-  const changeSelectedHouseFlat = (id) => {
+  const changeSelectedHouseFlat = useCallback((id) => {
     dispatch(addSelectedHouseFlat(id));
     dispatch(addCurrentFullAddress());
     dispatch(fetchClients(id));
-  }
+  }, [dispatch]
+  )
 
   return (
     <div className={styles.wrapper}>
